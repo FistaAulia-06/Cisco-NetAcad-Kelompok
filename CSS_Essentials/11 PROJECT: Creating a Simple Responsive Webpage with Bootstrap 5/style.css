@@ -1,20 +1,33 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Product Launch</title>
-    <!-- Add Bootstrap CSS and JS here -->
-</head>
-<body>
-    <!-- Add the responsive navigation bar here -->
 
-    <!-- Add the hero section here -->
+/* Styling Judul Utama */
+h1 {
+    font-size: 36px;
+    font-weight: bold;
+    color: #0d6efd;
+    text-align: center;
+    margin-top: 30px;
+    margin-bottom: 20px;
+    font-family: Arial, sans-serif;
+    text-transform: capitalize;
+    letter-spacing: 1px;
+}
 
-    <!-- Add the services section here -->
+/* Garis dekorasi di bawah judul */
+h1::after {
+    content: "";
+    display: block;
+    width: 100px;
+    height: 4px;
+    background-color: #0d6efd;
+    margin: 12px auto;
+    border-radius: 5px;
+}
 
-    <!-- Add the contact form here -->
+/* Tampilan responsif */
+@media (max-width: 768px) {
+    h1 {
+        font-size: 26px;
+        padding: 0 15px;
+    }
+}
 
-    <!-- Add the footer here -->
-</body>
-</html>
