@@ -1,0 +1,550 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Discover Your World</title>
+
+    <link rel="icon"
+    href="https://edube.org/uploads/media/default/0001/04/web-favicon.png"
+    type="image/png">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background: linear-gradient(135deg, #eaf6ff, #d4edff);
+            padding: 20px;
+            margin: 0;
+            color: #24445b;
+        }
+
+        h1 {
+            color: #155e91;
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        .description {
+            color: #526b7b;
+            margin-bottom: 20px;
+        }
+
+        button {
+            background-color: #168aad;
+            color: white;
+            padding: 12px 22px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 15px;
+            margin: 10px;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background-color: #126782;
+            transform: translateY(-2px);
+        }
+
+        .map-container {
+            position: relative;
+            width: 100%;
+            max-width: 893px;
+            margin: 25px auto;
+        }
+
+        .map-container img {
+            display: block;
+            width: 100%;
+            height: auto;
+            border-radius: 12px;
+            box-shadow: 0 5px 18px rgba(0,0,0,0.15);
+        }
+
+        /* Indonesia clickable marker */
+        .indonesia-marker {
+            position: absolute;
+            left: 70%;
+            top: 57%;
+            transform: translate(-50%, -50%);
+            background: rgba(22, 138, 173, 0.92);
+            color: white;
+            border: 2px solid white;
+            border-radius: 20px;
+            padding: 7px 12px;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 5;
+            white-space: nowrap;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+        }
+
+        .indonesia-marker:hover {
+            background: #126782;
+            transform: translate(-50%, -50%) scale(1.1);
+        }
+
+        /* Information Card */
+        #result {
+            display: none;
+            max-width: 550px;
+            margin: 25px auto;
+            padding: 25px;
+            background: white;
+            border-radius: 14px;
+            box-shadow: 0 5px 18px rgba(0,0,0,0.12);
+            text-align: left;
+            animation: fadeIn 0.4s;
+        }
+
+        #result h2 {
+            text-align: center;
+            color: #155e91;
+            border-bottom: 2px solid #d4edff;
+            padding-bottom: 12px;
+        }
+
+        #result p {
+            line-height: 1.7;
+        }
+
+        .info-label {
+            color: #168aad;
+            font-weight: bold;
+        }
+
+        .hint {
+            color: #607d8b;
+            font-size: 13px;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 25px;
+            }
+
+            .indonesia-marker {
+                font-size: 10px;
+                padding: 5px 8px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Discover Your World 🌍</h1>
+
+    <p class="description">
+        Explore the world map and discover famous
+        geographical features of each continent.
+    </p>
+
+    <button id="discoverLocation">
+        📍 Discover My Location
+    </button>
+
+    <p class="hint">
+        Click a continent or the Indonesia marker on the map!
+    </p>
+
+    <!-- Colored World Map -->
+    <div class="map-container">
+
+        <img
+            id="worldMap"
+            src="https://edube.org/uploads/media/default/0001/04/continents.jpg"
+            usemap="#image-map"
+            alt="Colored World Map"
+        >
+
+        <!-- Special Indonesia Button -->
+        <button
+            type="button"
+            class="indonesia-marker"
+            id="indonesiaButton"
+        >
+            🇮🇩 Indonesia
+        </button>
+
+    </div>
+
+    <!-- Clickable Map Areas -->
+    <map name="image-map" id="image-map">
+
+        <area
+            alt="North America"
+            title="North America"
+            id="north-america"
+            coords="41,17,386,283"
+            shape="rect"
+            href="#"
+        >
+
+        <area
+            alt="South America"
+            title="South America"
+            id="south-america"
+            coords="209,288,358,501"
+            shape="rect"
+            href="#"
+        >
+
+        <area
+            alt="Europe"
+            title="Europe"
+            id="europe"
+            coords="391,68,505,217"
+            shape="rect"
+            href="#"
+        >
+
+        <area
+            alt="Africa"
+            title="Africa"
+            id="africa"
+            coords="387,217,533,448"
+            shape="rect"
+            href="#"
+        >
+
+        <area
+            alt="Asia"
+            title="Asia"
+            id="asia"
+            coords="506,1,893,153"
+            shape="rect"
+            href="#"
+        >
+
+        <area
+            alt="Australia and Oceania"
+            title="Australia and Oceania"
+            id="australia-and-oceania"
+            coords="679,353,872,480"
+            shape="rect"
+            href="#"
+        >
+
+    </map>
+
+    <!-- Information Card -->
+    <div id="result">
+
+        <h2 id="continentName"></h2>
+
+        <p>
+            <span class="info-label">🌊 River:</span>
+            <span id="river"></span>
+        </p>
+
+        <p>
+            <span class="info-label">⛰️ Mountain:</span>
+            <span id="mountain"></span>
+        </p>
+
+        <p>
+            <span class="info-label">🏛️ Famous Landmarks:</span>
+            <span id="landmarks"></span>
+        </p>
+
+    </div>
+
+    <script>
+
+    document.addEventListener('DOMContentLoaded', function() {
+
+        const continentInfo = {
+
+            'north-america': {
+                continent: 'North America',
+                river: 'Mississippi River',
+                mountain: 'Denali',
+                landmarks: 'Grand Canyon, Statue of Liberty, Niagara Falls'
+            },
+
+            'south-america': {
+                continent: 'South America',
+                river: 'Amazon River',
+                mountain: 'Aconcagua',
+                landmarks: 'Machu Picchu, Galapagos Islands'
+            },
+
+            'europe': {
+                continent: 'Europe',
+                river: 'Danube River',
+                mountain: 'Mont Blanc',
+                landmarks: 'Eiffel Tower, Colosseum, Acropolis of Athens'
+            },
+
+            'africa': {
+                continent: 'Africa',
+                river: 'Nile River',
+                mountain: 'Mount Kilimanjaro',
+                landmarks: 'Sphinx, Table Mountain'
+            },
+
+            'asia': {
+                continent: 'Asia',
+                river: 'Yangtze River',
+                mountain: 'Mount Everest',
+                landmarks: 'Great Wall of China, Petra'
+            },
+
+            'indonesia': {
+                continent: 'Indonesia',
+                river: 'Kapuas River',
+                mountain: 'Puncak Jaya',
+                landmarks: 'Borobudur Temple, Bali, Komodo National Park, Raja Ampat'
+            },
+
+            'australia-and-oceania': {
+                continent: 'Australia and Oceania',
+                river: 'Murray River',
+                mountain: 'Mount Kosciuszko',
+                landmarks: 'Sydney Opera House, Great Barrier Reef, Uluru'
+            }
+
+        };
+
+        // Display Information
+        function displayContinentInfo(continentId) {
+
+            const info = continentInfo[continentId];
+
+            if (!info) return;
+
+            document.getElementById('continentName').textContent =
+                info.continent;
+
+            document.getElementById('river').textContent =
+                info.river;
+
+            document.getElementById('mountain').textContent =
+                info.mountain;
+
+            document.getElementById('landmarks').textContent =
+                info.landmarks;
+
+            document.getElementById('result').style.display = 'block';
+
+            document.getElementById('result').scrollIntoView({
+                behavior: 'smooth',
+                block: 'nearest'
+            });
+
+        }
+
+        // Click on Continents
+        document.querySelectorAll('area').forEach(area => {
+
+            area.addEventListener('click', function(event) {
+
+                event.preventDefault();
+
+                displayContinentInfo(this.id);
+
+            });
+
+        });
+
+        // Click Indonesia Button
+        document.getElementById('indonesiaButton')
+            .addEventListener('click', function() {
+
+                displayContinentInfo('indonesia');
+
+            });
+
+        // Responsive Image Map
+        const image = document.getElementById('worldMap');
+
+        const areas = document.querySelectorAll('area');
+
+        const originalCoords = new Map();
+
+        areas.forEach(area => {
+            originalCoords.set(area, area.coords);
+        });
+
+        function resizeMap() {
+
+            if (!image.naturalWidth) return;
+
+            const scaleX = image.clientWidth / image.naturalWidth;
+            const scaleY = image.clientHeight / image.naturalHeight;
+
+            areas.forEach(area => {
+
+                const coords = originalCoords.get(area)
+                    .split(',')
+                    .map(Number);
+
+                const newCoords = coords.map((value, index) => {
+
+                    return Math.round(
+                        value * (index % 2 === 0 ? scaleX : scaleY)
+                    );
+
+                });
+
+                area.coords = newCoords.join(',');
+
+            });
+
+        }
+
+        image.addEventListener('load', resizeMap);
+
+        if (image.complete && image.naturalWidth) {
+            resizeMap();
+        }
+
+        window.addEventListener('resize', resizeMap);
+
+        // Discover Location
+        const discoverLocationButton =
+            document.getElementById('discoverLocation');
+
+        discoverLocationButton.addEventListener('click', function() {
+
+            if (!navigator.geolocation) {
+
+                alert('Geolocation is not supported by your browser.');
+                return;
+
+            }
+
+            discoverLocationButton.textContent = 'Finding Location...';
+            discoverLocationButton.disabled = true;
+
+            navigator.geolocation.getCurrentPosition(
+
+                function(position) {
+
+                    const latitude = position.coords.latitude;
+                    const longitude = position.coords.longitude;
+
+                    const continentId =
+                        determineContinentByGeo(latitude, longitude);
+
+                    discoverLocationButton.textContent =
+                        '📍 Discover My Location';
+
+                    discoverLocationButton.disabled = false;
+
+                    if (continentId) {
+                        displayContinentInfo(continentId);
+                    }
+
+                },
+
+                function(error) {
+
+                    discoverLocationButton.textContent =
+                        '📍 Discover My Location';
+
+                    discoverLocationButton.disabled = false;
+
+                    alert('Unable to obtain location: ' + error.message);
+
+                }
+
+            );
+
+        });
+
+        // Determine Location
+        function determineContinentByGeo(latitude, longitude) {
+
+            // Indonesia
+            if (
+                latitude >= -11 &&
+                latitude <= 6 &&
+                longitude >= 95 &&
+                longitude <= 141
+            ) {
+                return 'indonesia';
+            }
+
+            if (
+                latitude > 35 &&
+                longitude > -10 &&
+                longitude < 40
+            ) {
+                return 'europe';
+            }
+
+            if (
+                latitude < 0 &&
+                longitude > -80 &&
+                longitude < -34
+            ) {
+                return 'south-america';
+            }
+
+            if (
+                latitude > 0 &&
+                longitude > -130 &&
+                longitude < -70
+            ) {
+                return 'north-america';
+            }
+
+            if (
+                latitude > -35 &&
+                latitude < 35 &&
+                longitude > 10 &&
+                longitude < 50
+            ) {
+                return 'africa';
+            }
+
+            if (
+                latitude > -10 &&
+                latitude < 60 &&
+                longitude > 40 &&
+                longitude < 180
+            ) {
+                return 'asia';
+            }
+
+            if (
+                latitude <= -10 &&
+                longitude > 110 &&
+                longitude < 180
+            ) {
+                return 'australia-and-oceania';
+            }
+
+            alert('Continent could not be determined based on your location.');
+
+            return null;
+
+        }
+
+    });
+
+    </script>
+
+</body>
+</html>
